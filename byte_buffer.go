@@ -128,7 +128,7 @@ func (buf *ByteBuffer) Capacity() int {
 	return len(buf.data)
 }
 
-// AddSize 直接增加大小 (需要通过其他方式填充数据, 比如 SharedBuffer/SharedBytes)
+// AddSize 直接增加大小 (需要通过其他方式填充数据, 比如 SharedBytes)
 func (buf *ByteBuffer) AddSize(size int) int {
 	buf.state.size += size
 	return buf.state.size
