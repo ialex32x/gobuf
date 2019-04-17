@@ -17,6 +17,7 @@ type IByteBuffer interface {
 
 	Capacity() int
 	Readable() int
+	Bytes() []byte
 	SharedBytes(start, end int) []byte
 	Seek(index int)
 	PushState()
@@ -147,6 +148,10 @@ func (buf *ByteBuffer) Size() int {
 // SharedBytes 底层数据的指定切片 (不会改变状态)
 func (buf *ByteBuffer) SharedBytes(start, end int) []byte {
 	return buf.data[start:end]
+}
+
+func (buf *ByteBuffer) Bytes() []byte {
+	return buf.data[buf.state.index:buf.state.size]
 }
 
 // Seek 指定度索引位置
