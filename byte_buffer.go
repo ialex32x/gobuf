@@ -14,6 +14,8 @@ type IByteBuffer interface {
 	Size() int
 	Index() int
 	Print()
+	Tag() int
+	SetTag(tag int) int
 
 	Capacity() int
 	Readable() int
@@ -55,20 +57,32 @@ type ByteBufferState struct {
 }
 
 type ByteBuffer struct {
+	tag    int
 	data   []byte
 	state  ByteBufferState
 	states []ByteBufferState
 }
 
 // NewByteBuffer 创建无内存池管理的 ByteBuffer 实例
-func NewByteBuffer(bytes []byte) *ByteBuffer {
+func NewByteBuffer(bytes []byte, tag int) *ByteBuffer {
 	return &ByteBuffer{
+		tag:  tag,
 		data: bytes, // Underlying Bytes
 		state: ByteBufferState{
 			index: 0,          // Position for Reader
 			size:  len(bytes), // Size
 		},
 	}
+}
+
+func (buf *ByteBuffer) Tag() int {
+	return buf.tag
+}
+
+func (buf *ByteBuffer) SetTag(tag int) int {
+	old := buf.tag
+	buf.tag = tag
+	return old
 }
 
 func (buf *ByteBuffer) Print() {

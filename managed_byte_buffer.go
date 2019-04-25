@@ -13,9 +13,9 @@ type ManagedByteBuffer struct {
 
 func newManagedByteBuffer(buffers *Buffers) *ManagedByteBuffer {
 	return &ManagedByteBuffer{
-		ByteBuffer: NewByteBuffer([]byte{}), // underlying byte buffer object (initially nil bytes in general situation)
-		refCount:   0,                       // refCount
-		buffers:    buffers,                 // manager owned this bytebuffer object
+		ByteBuffer: NewByteBuffer([]byte{}, 0), // underlying byte buffer object (initially nil bytes in general situation)
+		refCount:   0,                          // refCount
+		buffers:    buffers,                    // manager owned this bytebuffer object
 	}
 }
 
