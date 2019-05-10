@@ -20,6 +20,7 @@ type IByteBuffer interface {
 	Capacity() int
 	Readable() int
 	Bytes() []byte
+	Copy() []byte
 	SharedBytes(start, end int) []byte
 	Seek(index int)
 	PushState()
@@ -166,6 +167,13 @@ func (buf *ByteBuffer) SharedBytes(start, end int) []byte {
 
 func (buf *ByteBuffer) Bytes() []byte {
 	return buf.data[buf.state.index:buf.state.size]
+}
+
+func (buf *ByteBuffer) Copy() []byte {
+	size := buf.state.size - buf.state.index
+	shadow := make([]byte, size, size)
+	copy(shadow, buf.data[buf.state.index:buf.state.size])
+	return shadow
 }
 
 // Seek 指定度索引位置
