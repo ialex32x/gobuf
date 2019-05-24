@@ -6,6 +6,7 @@ import (
 
 type Buffers struct {
 	pool *sync.Pool
+	// alive int32
 }
 
 var DefaultBuffers = NewBuffers()
@@ -24,5 +25,7 @@ func (buffers *Buffers) Alloc(capacity int) *ManagedByteBuffer {
 	buf := buffers.pool.Get().(*ManagedByteBuffer)
 	buf.refCount = 1
 	buf.ensureCapacity(capacity)
+	// atomic.AddInt32(&buffers.alive, 1)
+	// fmt.Printf("buffers alloc %v\n", buffers.alive)
 	return buf
 }

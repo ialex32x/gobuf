@@ -8,7 +8,6 @@ type ManagedByteBuffer struct {
 	*ByteBuffer
 	refCount int32
 	buffers  *Buffers // pool
-	// lock     sync.Mutex
 }
 
 func newManagedByteBuffer(buffers *Buffers) *ManagedByteBuffer {
@@ -20,24 +19,19 @@ func newManagedByteBuffer(buffers *Buffers) *ManagedByteBuffer {
 }
 
 func (buf *ManagedByteBuffer) Retain() IByteBuffer {
-	// buf.lock.Lock()
-	// buf.refCount++
-	// buf.lock.Unlock()
 	atomic.AddInt32(&buf.refCount, 1)
 	return buf
 }
 
 func (buf *ManagedByteBuffer) Release() {
-	// buf.lock.Lock()
-	// buf.refCount--
-	// refCount := buf.refCount
-	// buf.lock.Unlock()
 	refCount := atomic.AddInt32(&buf.refCount, -1)
 	if refCount == 0 {
 		buf.Clear()
 		buffers := buf.buffers
 		if buffers != nil {
 			buffers.pool.Put(buf)
+			// atomic.AddInt32(&buffers.alive, -1)
+			// fmt.Printf("buffers release %v\n", buffers.alive)
 		}
 	}
 }
