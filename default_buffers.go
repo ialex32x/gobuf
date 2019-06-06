@@ -27,5 +27,6 @@ func (buffers *Buffers) Alloc(capacity int) *ManagedByteBuffer {
 	buf.ensureCapacity(capacity)
 	// atomic.AddInt32(&buffers.alive, 1)
 	// fmt.Printf("buffers alloc %v\n", buffers.alive)
+	// debug.PrintStack()
 	return buf
 }
